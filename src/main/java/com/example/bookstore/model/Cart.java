@@ -21,12 +21,14 @@ public class Cart {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long carId;
 
-
     @ElementCollection
     @CollectionTable(name = "cart_books", joinColumns = @JoinColumn(name = "cart_id"))
     @MapKeyJoinColumn(name = "book_id") // The key (book) is a reference to the books table
     @Column(name = "quantity")         // The value column for quantity
     private Map<Long,Integer> books;
-    private int UserId;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false) // Foreign key to the User table
+    private User user;
 
 }
