@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
 import java.util.Map;
 
 @Entity
@@ -19,16 +18,16 @@ public class Cart {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long carId;
+    private Long cartId;
 
     @ElementCollection
-    @CollectionTable(name = "cart_books", joinColumns = @JoinColumn(name = "cart_id"))
-    @MapKeyJoinColumn(name = "book_id") // The key (book) is a reference to the books table
+    @CollectionTable(name = "cart_books", joinColumns = @JoinColumn(name = "cart_id")) // The cart_id is a reference to the carts table
+    @MapKeyJoinColumn(name = "book_id") // The book_id is a reference to the books table
     @Column(name = "quantity")         // The value column for quantity
     private Map<Long,Integer> books;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false) // Foreign key to the User table
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
 }

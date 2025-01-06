@@ -33,15 +33,14 @@ public class Order {
 
     private Double total;
     private LocalDateTime orderDate;
-    private String orderStatus;
+//  private String orderStatus;
 
-    // Constructor to create an Order from a Cart
     public Order(Cart cart, Double total, LocalDateTime orderDate, String orderStatus) {
         this.user = cart.getUser();
         this.books = cart.getBooks(); // Copy books and quantities from the cart
         this.total = total;
         this.orderDate = orderDate;
-        this.orderStatus = orderStatus;
+//      this.orderStatus = orderStatus;
     }
 }
 

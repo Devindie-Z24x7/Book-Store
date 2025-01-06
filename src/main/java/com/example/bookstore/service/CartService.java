@@ -6,6 +6,7 @@ import com.example.bookstore.model.Order;
 import com.example.bookstore.repository.BookRepository;
 import com.example.bookstore.repository.CartRepository;
 import com.example.bookstore.repository.OrderRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +17,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @Service
+@Transactional
 public class CartService {
     private final OrderRepository orderRepository;
     private final CartRepository cartRepository;
@@ -29,7 +31,8 @@ public class CartService {
     }
 
     //create a cart
-    public Cart creatCart(Cart cart){
+    public Cart creatCart(Cart cart) {
+
         return cartRepository.save(cart);
     }
 
@@ -64,11 +67,12 @@ public class CartService {
         }
 
         cart.setBooks(books); // Update the books map
-        return cartRepository.save(cart); // Persist the changes
+        return cartRepository.save(cart);// Persist the changes
+
     }
 
     //remove books from cart
-    public void removeBook(Long cartId, Long bookId){
+    public void removeBook(Long cartId, Long bookId) {
         Optional<Cart> cartOptional = cartRepository.findById(cartId);
 
         if (cartOptional.isEmpty() ) {
@@ -80,7 +84,7 @@ public class CartService {
         // books map is initialized
         Map<Long, Integer> books = cart.getBooks();
 
-        if(books == null || !books.containsKey(bookId)){
+        if(books == null || !books.containsKey(bookId)) {
             throw new RuntimeException("Book not found in the cart");
         }
 
@@ -92,7 +96,7 @@ public class CartService {
     }
 
     //delete a cart
-    public void deleteBook(Long cartId){
+    public void deleteBook(Long cartId) {
         if (cartRepository.existsById(cartId)) {
             cartRepository.deleteById(cartId);
         } else {
@@ -101,13 +105,13 @@ public class CartService {
     }
 
     //view the cart
-    public Optional<Cart> displayCart(Long cartId){
+    public Optional<Cart> displayCart(Long cartId) {
         return cartRepository.findById(cartId);
 
     }
 
     //view books in the cart
-    public Map<Long, Integer> viewBooksInCart(Long cartId){
+    public Map<Long, Integer> viewBooksInCart(Long cartId) {
         Optional<Cart> cartOptional = cartRepository.findById(cartId);
 
         Cart cart = cartOptional.orElseThrow(() -> new RuntimeException("Cart not found"));
@@ -135,31 +139,30 @@ public class CartService {
     }
 
     //view all carts and there items
-    public List<Cart> getAllCarts(){
+    public List<Cart> getAllCarts() {
         return cartRepository.findAll();
 
     }
 
-    // Convert a cart to an order upon user confirmation
-    public Order convertCartToOrder(Long cartId, String orderStatus) {
-        // Fetch the cart
-        Cart cart = cartRepository.findById(cartId)
-                .orElseThrow(() -> new RuntimeException("Cart not found"));
-
-        // Use CartService to calculate the total price
-        Double total = this.calculateTotalPrice(cartId);
-
-        // Create the Order object
-        Order order = new Order(cart, total, LocalDateTime.now(), orderStatus);
-
-        // Save the Order
-        order = orderRepository.save(order);
-
-        // Remove the cart after creating the Order
-        cartRepository.delete(cart);
-
-        return order;
-    }
-
+//    // Convert a cart to an order upon user confirmation
+//    public Order convertCartToOrder(Long cartId, String orderStatus) {
+//        // Fetch the cart
+//        Cart cart = cartRepository.findById(cartId)
+//                .orElseThrow(() -> new RuntimeException("Cart not found"));
+//
+//        // Use CartService to calculate the total price
+//        Double total = this.calculateTotalPrice(cartId);
+//
+//        // Create the Order object
+//        Order order = new Order(cart, total, LocalDateTime.now(), orderStatus);
+//
+//        // Save the Order
+//        order = orderRepository.save(order);
+//
+//        // Remove the cart after creating the Order
+//        cartRepository.delete(cart);
+//
+//        return order;
+//    }
 
 }
