@@ -21,9 +21,9 @@ public class Cart {
     private Long cartId;
 
     @ElementCollection
-    @CollectionTable(name = "cart_books", joinColumns = @JoinColumn(name = "cart_id")) // The cart_id is a reference to the carts table
-    @MapKeyJoinColumn(name = "book_id") // The book_id is a reference to the books table
-    @Column(name = "quantity")         // The value column for quantity
+    @CollectionTable(name = "cart_books", joinColumns = @JoinColumn(name = "cart_id"))
+    @MapKeyJoinColumn(name = "book_id")
+    @Column(name = "quantity")
     private Map<Long,Integer> books;
 
     @ManyToOne

@@ -1,10 +1,7 @@
 package com.example.bookstore.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.Map;
@@ -15,6 +12,7 @@ import java.util.Map;
 @NoArgsConstructor
 @Getter
 @Setter
+@Builder
 public class Order {
 
     @Id
@@ -28,19 +26,17 @@ public class Order {
     private Map<Long,Integer> books;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false) // Foreign key to the User table
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     private Double total;
     private LocalDateTime orderDate;
-//  private String orderStatus;
 
     public Order(Cart cart, Double total, LocalDateTime orderDate, String orderStatus) {
         this.user = cart.getUser();
-        this.books = cart.getBooks(); // Copy books and quantities from the cart
+        this.books = cart.getBooks();
         this.total = total;
         this.orderDate = orderDate;
-//      this.orderStatus = orderStatus;
     }
 }
 

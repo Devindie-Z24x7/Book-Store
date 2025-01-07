@@ -1,47 +1,18 @@
 package com.example.bookstore.service;
 
-import com.example.bookstore.model.Book;
-import com.example.bookstore.repository.BookRepository;
-import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import com.example.bookstore.service.dto.BookDTO;
 
 import java.util.List;
 import java.util.Optional;
 
-@Service
-@Transactional
-public class BookService {
-    private final BookRepository bookRepository;
+public interface BookService {
 
-    @Autowired
-    public BookService(BookRepository bookRepository) {
-        this.bookRepository = bookRepository;
-    }
+    BookDTO saveBook(BookDTO bookDto);
 
-    //save a book
-    public Book saveBook(Book book){
-        return bookRepository.save(book);
-    }
+    public List<BookDTO> getAllBooks();
 
-    //get all books
-    public List<Book> getAllBooks(){
-        return bookRepository.findAll();
-    }
+    Optional<BookDTO> getBookById(Long id);
 
-    //get a book by id
-    public Optional<Book> getBookById(Long id){
-        return bookRepository.findById(id);
-    }
-
-    //delete a book
-    public void deleteBook(Long id){
-        if (bookRepository.existsById(id)) {
-            bookRepository.deleteById(id);
-        } else {
-            throw new RuntimeException("Book not found with id: " + id);
-        }
-    }
+    void deleteBook(Long id);
 
 }
-
