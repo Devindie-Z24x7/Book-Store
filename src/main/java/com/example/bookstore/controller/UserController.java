@@ -1,9 +1,10 @@
 package com.example.bookstore.controller;
 
+import com.example.bookstore.service.UserService;
 import com.example.bookstore.service.dto.OrderDTO;
 import com.example.bookstore.service.dto.UserCreateDTO;
 import com.example.bookstore.service.dto.UserDTO;
-import com.example.bookstore.service.implementation.UserServiceImpl;
+//import com.example.bookstore.service.implementation.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +21,7 @@ import java.util.List;
 public class UserController {
 
     @Autowired
-    private UserServiceImpl userService;
+    private UserService userService;
 
     /**
      * Creates a new user.

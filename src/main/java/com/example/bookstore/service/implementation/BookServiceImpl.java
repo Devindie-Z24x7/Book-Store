@@ -1,14 +1,18 @@
 package com.example.bookstore.service.implementation;
 
+import com.example.bookstore.model.Book;
 import com.example.bookstore.service.dto.BookDTO;
 import com.example.bookstore.service.mapper.BookMapper;
 import com.example.bookstore.repository.BookRepository;
 import com.example.bookstore.service.BookService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.ReflectionUtils;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.Field;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -69,6 +73,27 @@ public class BookServiceImpl implements BookService {
         } else {
             throw new RuntimeException("Book not found with id: " + id);
         }
+    }
+
+    public BookDTO updateBookByFields(Long id, Map<String, Object> fields) {
+        Optional<Book> existingBook = bookRepository.findById(id);
+
+        if (existingBook.isEmpty() ) {
+            throw new RuntimeException("Book not found");
+        }
+
+        Book book = existingBook.get();
+
+        fields.forEach((key, value) -> {
+            Field field = ReflectionUtils.findField(Book.class, key);
+            if (field != null) {
+                field.setAccessible(true);
+                ReflectionUtils.setField(field, book, value);
+            }
+        });
+
+        Book savedBook = bookRepository.save(book);
+        return BookMapper.toBookDTO(savedBook);
     }
 
 }

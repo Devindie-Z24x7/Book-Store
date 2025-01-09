@@ -1,5 +1,6 @@
 package com.example.bookstore.controller;
 
+import com.example.bookstore.service.OrderService;
 import com.example.bookstore.service.dto.OrderDTO;
 import com.example.bookstore.service.implementation.OrderServiceImpl;
 import lombok.extern.slf4j.Slf4j;
@@ -18,7 +19,7 @@ import java.util.Optional;
 @RequestMapping("/api/v1/order")
 public class OrderController {
 
-    private final OrderServiceImpl orderService;
+    private final OrderService orderService;
 
     public OrderController(OrderServiceImpl orderService) {
 

@@ -1,5 +1,6 @@
 package com.example.bookstore.controller;
 
+import com.example.bookstore.service.BookService;
 import com.example.bookstore.service.dto.BookDTO;
 import com.example.bookstore.service.implementation.BookServiceImpl;
 import lombok.extern.slf4j.Slf4j;
@@ -8,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 /**
  * Controller for books
@@ -18,7 +21,7 @@ import java.util.List;
 public class BookController {
 
     @Autowired
-    private final BookServiceImpl bookService;
+    private final BookService bookService;
 
     public BookController(BookServiceImpl bookService) {
         this.bookService = bookService;
@@ -101,5 +104,16 @@ public class BookController {
         return ResponseEntity.noContent().build();
     }
 
+    @PatchMapping("/{id}")
+    public ResponseEntity<BookDTO> updateBookByFields(@PathVariable Long id, @RequestBody Map<String, Object> fields) {
+
+        log.info("updateBookByFields() - Request received. Book ID: {}", id);
+
+        BookDTO updatedBook = bookService.updateBookByFields(id, fields);
+
+        log.info("updateBookByFields() - Book updated successfully. Book ID: {}", id);
+
+        return ResponseEntity.ok(updatedBook);
+    }
 
 }
